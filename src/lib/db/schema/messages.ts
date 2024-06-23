@@ -18,6 +18,6 @@ export const messages = pgTable("messages", {
     .references(() => conversations.id)
     .notNull(),
   sender: senderEnum("sender").notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
