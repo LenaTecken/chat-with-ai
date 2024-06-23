@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import "./globals.css";
-import ConversationsNav from "@/components/conversations/conversations-nav";
+import ConversationSidebar from "@/components/conversation/conversation-Sidebar";
+import Providers from "@/components/providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,12 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="flex h-dvh flex-col md:flex-row">
-          <div className="bg-background">
-            <ConversationsNav />
-          </div>
-          {children}
-        </main>
+        <Providers>
+          <main className="flex h-dvh flex-col md:flex-row">
+            <ConversationSidebar />
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
