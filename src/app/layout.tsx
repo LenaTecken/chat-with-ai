@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <main className="flex h-dvh flex-col md:flex-row">
+          <main className="flex h-screen flex-col md:flex-row">
             <ConversationSidebar />
             {children}
           </main>

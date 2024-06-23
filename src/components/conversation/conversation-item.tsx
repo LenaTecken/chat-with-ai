@@ -18,7 +18,7 @@ function ConversationItem({ date, id, title }: Props) {
 
   return (
     <Link
-      href={`conversation/${id}`}
+      href={`/conversation/${id}`}
       className={cn(
         "flex flex-col gap-1 px-4 py-3 transition-colors hover:bg-muted/50",
         { ["bg-muted/50"]: conversationId === id.toString() }

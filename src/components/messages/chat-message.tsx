@@ -22,7 +22,7 @@ function ChatMessage({ text, createdAt, sender }: Props) {
         <h5 className="font-medium text-foreground">
           {sender === "user" ? "You" : "Assistant"}
         </h5>
-        <div className="rounded-2xl whitespace-pre-line bg-muted p-3 text-foreground">
+        <div className="rounded-2xl whitespace-pre-wrap break-all bg-muted p-3 text-foreground">
           {text}
         </div>
         <span className="text-xs text-secondary-foreground">

@@ -19,6 +19,7 @@ function CreateMessageForm({ conversationId }: Props) {
   const [text, setText] = useState("");
 
   const { data, mutate, isPending } = useMutation({
+    mutationKey: ["sendMessage"],
     mutationFn: sendMessage,
     onSuccess: (data) => {
       if (!data?.error) {
@@ -34,6 +35,7 @@ function CreateMessageForm({ conversationId }: Props) {
       });
     },
   });
+  const error = typeof data?.errors === "string" ? data?.errors : "";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,7 +48,9 @@ function CreateMessageForm({ conversationId }: Props) {
         id="text"
         name="text"
         placeholder="Enter your message..."
-        errors={data?.errors}
+        error={
+          error || (data?.errors as any)?.["text"]?._errors?.[0] || undefined
+        }
         disabled={isPending}
         value={text}
         onChange={(e) => setText(e.target.value)}

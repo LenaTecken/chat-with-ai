@@ -14,7 +14,7 @@ import {
 } from "../ui/sheet";
 
 async function ConversationSidebar() {
-  const { data } = await getConversations();
+  const { data, success } = await getConversations();
 
   return (
     <>
@@ -26,20 +26,22 @@ async function ConversationSidebar() {
             </h3>
           </Link>
         </header>
-        <ConversationsNav initialData={data} />
+        <ConversationsNav initialData={data} success={success} />
       </aside>
-      <div className="bg-background">
+      <div className="border-b border-border bg-background">
         <Sheet>
           <SheetTrigger className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted/50 md:hidden">
             <Menu className="h-6 w-6" />
           </SheetTrigger>
           <SheetContent side="left" className="w-full max-w-64 px-0">
             <SheetHeader className="flex justify-start border-b border-border px-4 py-3 text-left">
-              <SheetTitle className="text-lg font-semibold text-foreground">
-                Conversations
-              </SheetTitle>
+              <Link href="/">
+                <SheetTitle className="text-lg font-semibold text-foreground">
+                  Conversations
+                </SheetTitle>
+              </Link>
             </SheetHeader>
-            <ConversationsNav initialData={data} />
+            <ConversationsNav initialData={data} success={success} />
           </SheetContent>
         </Sheet>
       </div>

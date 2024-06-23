@@ -1,11 +1,12 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutationState, useQuery } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { fetchMessages } from "@/lib/api/messages";
 import { Message } from "@/lib/db/schema/messages.schema";
+import { cn } from "@/lib/utils";
 
 import ChatMessage from "./chat-message";
 
@@ -15,19 +16,43 @@ interface Props {
 }
 
 function ChatMessages({ conversationId, initialMessages }: Props) {
-  const { data, isLoading } = useQuery({
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
+
+  const { data, isLoading, error } = useQuery({
     queryKey: ["messages", conversationId],
     queryFn: () => fetchMessages(conversationId),
     initialData: initialMessages,
+    staleTime: initialMessages.length ? 60 * 1000 : 0,
     enabled: !!conversationId,
-    staleTime: !!conversationId ? 60 * 1000 : 0,
   });
+
+  const variables = useMutationState<Message>({
+    filters: { mutationKey: ["sendMessage"], status: "pending" },
+    select: (mutation) => {
+      const variable = mutation.state.variables as Message;
+
+      return {
+        conversationId: variable.conversationId,
+        text: variable.text,
+        id: data.length,
+        sender: "user",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    },
+  });
+
+  const messages = variables.length ? [...data, variables[0]] : data;
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages.length]);
 
   return (
     <section className="flex-1 overflow-auto bg-background p-4">
-      {!!data?.length ? (
+      {!!messages.length ? (
         <div className="flex flex-col gap-3">
-          {data.map(({ id, createdAt, sender, text }) => (
+          {messages.map(({ id, createdAt, sender, text }) => (
             <ChatMessage
               key={id}
               createdAt={createdAt}
@@ -35,14 +60,21 @@ function ChatMessages({ conversationId, initialMessages }: Props) {
               text={text}
             />
           ))}
+          <div ref={messagesEndRef} />
         </div>
       ) : (
         <div className="flex h-full flex-col items-center justify-center">
           {isLoading ? (
             <LoaderCircle className="h-10 w-10 animate-spin text-foreground" />
           ) : (
-            <h1 className="text-4xl text-foreground">
-              Enter your first prompt...
+            <h1
+              className={cn("text-4xl text-foreground", {
+                "text-destructive": !!error,
+              })}
+            >
+              {!!error
+                ? "Could not load messages"
+                : "Enter your first prompt..."}
             </h1>
           )}
         </div>

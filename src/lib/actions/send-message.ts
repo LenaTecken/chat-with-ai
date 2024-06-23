@@ -62,10 +62,11 @@ export async function sendMessage(payload: SendMessageData) {
       },
     ]);
   } catch (e) {
-    console.log(e);
-    const error = e as ZodError;
+    if (e instanceof ZodError) {
+      if (!e.isEmpty) return { error: true, errors: e.format() };
+    }
 
-    if (!error.isEmpty) return { error: true, errors: error.format() };
+    return { error: true, errors: "Something went wrong" };
   }
 
   if (shouldRedirect) {

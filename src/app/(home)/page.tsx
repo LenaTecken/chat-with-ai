@@ -3,7 +3,7 @@ import CreateMessageForm from "@/components/messages/create-message-form";
 
 export default function HomePage() {
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col justify-between">
       <ChatMessages conversationId={null} initialMessages={[]} />
       <section className="sticky bottom-0 border-t border-border bg-background px-4 py-3">
         <CreateMessageForm conversationId={null} />

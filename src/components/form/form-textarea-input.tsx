@@ -8,19 +8,17 @@ interface Props extends TextareaProps {
   id: string;
   name: string;
   disabled?: boolean;
-  errors?: any;
+  error?: string;
 }
 
 function FormTextAreaInput({
   id,
   name,
-  errors,
+  error,
   disabled,
   placeholder,
   ...props
 }: Props) {
-  const inputErr: string[] = errors?.[id]?._errors ?? [];
-
   return (
     <div className="flex flex-1 flex-col gap-1">
       <Textarea
@@ -31,20 +29,12 @@ function FormTextAreaInput({
         {...props}
         className={cn(
           "rounded-2xl flex-1 resize-none bg-secondary pr-12 text-foreground placeholder:text-foreground/60",
-          { "border-destructive": inputErr.length }
+          { "border-destructive": !!error }
         )}
       />
-      {!!inputErr.length ? (
-        <div className="text-destructive">
-          {inputErr.map((error, k) => (
-            <span key={`err-${id}-${k}`} className="text-xs">
-              {error}
-            </span>
-          ))}
-        </div>
-      ) : (
-        <div className="h-6" />
-      )}
+      <div className="h-6">
+        {!!error && <span className="text-xs text-destructive">{error}</span>}
+      </div>
     </div>
   );
 }
