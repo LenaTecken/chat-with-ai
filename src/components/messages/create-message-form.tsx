@@ -2,10 +2,9 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LoaderCircle, SendIcon } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 
 import { sendMessage } from "@/lib/actions/send-message";
-import { Message } from "@/lib/db/schema/messages.schema";
 
 import FormTextAreaInput from "../form/form-textarea-input";
 import { Button } from "../ui/button";
@@ -17,31 +16,14 @@ interface Props {
 function CreateMessageForm({ conversationId }: Props) {
   const queryClient = useQueryClient();
 
+  const [text, setText] = useState("");
+
   const { data, mutate, isPending } = useMutation({
     mutationFn: sendMessage,
-    onMutate: async (formData) => {
-      const convId = formData.get("conversationId");
-      const text = formData.get("text");
-      if (!convId) {
-        return;
+    onSuccess: (data) => {
+      if (!data?.error) {
+        setText("");
       }
-
-      await queryClient.cancelQueries({
-        queryKey: ["messages", conversationId],
-      });
-
-      const previousMessages = queryClient.getQueryData(["messages", convId]);
-      queryClient.setQueryData(["messages", convId], (old: Message[]) => [
-        ...old,
-        {
-          id: old.length,
-          createdAt: new Date(),
-          sender: "user",
-          text: text,
-        },
-      ]);
-
-      return { previousMessages };
     },
     onSettled: () => {
       if (!conversationId) {
@@ -52,27 +34,22 @@ function CreateMessageForm({ conversationId }: Props) {
       });
     },
   });
-  console.log(data);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    mutate(formData);
+    mutate({ text, conversationId: conversationId ?? undefined });
   };
 
   return (
     <form className="flex items-center gap-2" onSubmit={handleSubmit}>
-      <input
-        type="hidden"
-        name="conversationId"
-        value={conversationId ?? undefined}
-      />
       <FormTextAreaInput
         id="text"
         name="text"
         placeholder="Enter your message..."
-        errors={data}
+        errors={data?.errors}
         disabled={isPending}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
       />
       <Button
         variant="ghost"

@@ -2,17 +2,23 @@ import React from "react";
 
 import { cn } from "@/lib/utils";
 
-import { Textarea } from "../ui/textarea";
+import { Textarea, TextareaProps } from "../ui/textarea";
 
-interface Props {
+interface Props extends TextareaProps {
   id: string;
   name: string;
-  placeholder: string;
   disabled?: boolean;
   errors?: any;
 }
 
-function FormTextAreaInput({ id, name, placeholder, errors, disabled }: Props) {
+function FormTextAreaInput({
+  id,
+  name,
+  errors,
+  disabled,
+  placeholder,
+  ...props
+}: Props) {
   const inputErr: string[] = errors?.[id]?._errors ?? [];
 
   return (
@@ -22,6 +28,7 @@ function FormTextAreaInput({ id, name, placeholder, errors, disabled }: Props) {
         name={name}
         disabled={disabled}
         placeholder={placeholder}
+        {...props}
         className={cn(
           "rounded-2xl flex-1 resize-none bg-secondary pr-12 text-foreground placeholder:text-foreground/60",
           { "border-destructive": inputErr.length }

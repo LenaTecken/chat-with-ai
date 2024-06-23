@@ -22,7 +22,9 @@ function ChatMessage({ text, createdAt, sender }: Props) {
         <h5 className="font-medium text-foreground">
           {sender === "user" ? "You" : "Assistant"}
         </h5>
-        <div className="rounded-2xl bg-muted p-3 text-foreground">{text}</div>
+        <div className="rounded-2xl whitespace-pre-line bg-muted p-3 text-foreground">
+          {text}
+        </div>
         <span className="text-xs text-secondary-foreground">
           {format(createdAt, "hh:mm a")}
         </span>

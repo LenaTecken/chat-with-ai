@@ -5,17 +5,20 @@ import { LoaderCircle } from "lucide-react";
 import React from "react";
 
 import { fetchMessages } from "@/lib/api/messages";
+import { Message } from "@/lib/db/schema/messages.schema";
 
 import ChatMessage from "./chat-message";
 
 interface Props {
   conversationId: number | null;
+  initialMessages: Message[];
 }
 
-function ChatMessages({ conversationId }: Props) {
+function ChatMessages({ conversationId, initialMessages }: Props) {
   const { data, isLoading } = useQuery({
     queryKey: ["messages", conversationId],
     queryFn: () => fetchMessages(conversationId),
+    initialData: initialMessages,
     enabled: !!conversationId,
     staleTime: !!conversationId ? 60 * 1000 : 0,
   });

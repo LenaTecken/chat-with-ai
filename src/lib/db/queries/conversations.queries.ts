@@ -1,4 +1,5 @@
 import "server-only";
+import { desc } from "drizzle-orm";
 import { PostgresError } from "postgres";
 
 import { db } from "..";
@@ -9,7 +10,10 @@ import {
 
 export async function getConversations() {
   try {
-    const allConversations = await db.select().from(conversations);
+    const allConversations = await db
+      .select()
+      .from(conversations)
+      .orderBy(desc(conversations.createdAt));
 
     return { success: true, data: allConversations };
   } catch (e) {

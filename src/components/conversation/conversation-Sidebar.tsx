@@ -1,4 +1,5 @@
 import { Menu } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 import { getConversations } from "@/lib/db/queries/conversations.queries";
@@ -19,9 +20,11 @@ async function ConversationSidebar() {
     <>
       <aside className="hidden w-full max-w-64 border-r border-r-border bg-background md:block">
         <header className="sticky top-0 flex items-center border-b border-border px-4 py-3">
-          <h3 className="text-lg font-semibold text-foreground">
-            Conversations
-          </h3>
+          <Link href="/">
+            <h3 className="text-lg font-semibold text-foreground">
+              Conversations
+            </h3>
+          </Link>
         </header>
         <ConversationsNav initialData={data} />
       </aside>

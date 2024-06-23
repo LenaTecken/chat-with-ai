@@ -1,5 +1,5 @@
 import "server-only";
-import { desc, eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { PostgresError } from "postgres";
 
 import { db } from "..";
@@ -11,7 +11,7 @@ export async function getConversationMessages(conversationId: number) {
       .select()
       .from(messages)
       .where(eq(messages.conversationId, conversationId))
-      .orderBy(desc(messages.createdAt));
+      .orderBy(asc(messages.createdAt));
 
     return { success: true, data: conversationMessages };
   } catch (e) {
@@ -25,6 +25,8 @@ export async function getConversationMessages(conversationId: number) {
   }
 }
 
-export async function createMessage(message: CreateMessage) {
-  await db.insert(messages).values(message);
+export async function createMessages(msgs: CreateMessage[]) {
+  const newMessages = await db.insert(messages).values(msgs).returning();
+
+  return newMessages;
 }
