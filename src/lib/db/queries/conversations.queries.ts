@@ -2,7 +2,10 @@ import "server-only";
 import { PostgresError } from "postgres";
 
 import { db } from "..";
-import { conversations } from "../schema/conversations";
+import {
+  CreateConversation,
+  conversations,
+} from "../schema/conversations.schema";
 
 export async function getConversations() {
   try {
@@ -18,4 +21,13 @@ export async function getConversations() {
       message: error.message,
     };
   }
+}
+
+export async function createConversation(conversation: CreateConversation) {
+  const newConversation = await db
+    .insert(conversations)
+    .values(conversation)
+    .returning({ id: conversations.id });
+
+  return newConversation[0].id;
 }

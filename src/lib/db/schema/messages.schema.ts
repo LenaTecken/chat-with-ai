@@ -7,7 +7,7 @@ import {
   timestamp,
 } from "drizzle-orm/pg-core";
 
-import { conversations } from "./conversations";
+import { conversations } from "./conversations.schema";
 
 export const senderEnum = pgEnum("sender", ["user", "assistant"]);
 
@@ -23,3 +23,4 @@ export const messages = pgTable("messages", {
 });
 
 export type Message = typeof messages.$inferSelect;
+export type CreateMessage = typeof messages.$inferInsert;

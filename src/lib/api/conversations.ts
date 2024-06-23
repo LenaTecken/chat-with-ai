@@ -1,4 +1,4 @@
-import { Conversation } from "../db/schema/conversations";
+import { Conversation } from "../db/schema/conversations.schema";
 
 export async function fetchConversations() {
   const res = await fetch("/api/conversations");

@@ -1,4 +1,4 @@
-import { Message } from "../db/schema/messages";
+import { Message } from "../db/schema/messages.schema";
 
 export async function fetchMessages(conversationId: number | null) {
   if (!conversationId) {

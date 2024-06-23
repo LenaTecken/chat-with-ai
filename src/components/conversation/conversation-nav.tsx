@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 import { fetchConversations } from "@/lib/api/conversations";
-import { Conversation } from "@/lib/db/schema/conversations";
+import { Conversation } from "@/lib/db/schema/conversations.schema";
 
 import ConversationItem from "./conversation-item";
 

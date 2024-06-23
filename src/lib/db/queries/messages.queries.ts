@@ -3,7 +3,7 @@ import { desc, eq } from "drizzle-orm";
 import { PostgresError } from "postgres";
 
 import { db } from "..";
-import { messages } from "../schema/messages";
+import { CreateMessage, messages } from "../schema/messages.schema";
 
 export async function getConversationMessages(conversationId: number) {
   try {
@@ -23,4 +23,8 @@ export async function getConversationMessages(conversationId: number) {
       message: error.message,
     };
   }
+}
+
+export async function createMessage(message: CreateMessage) {
+  await db.insert(messages).values(message);
 }

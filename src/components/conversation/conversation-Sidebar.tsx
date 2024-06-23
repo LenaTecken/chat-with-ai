@@ -1,7 +1,7 @@
 import { Menu } from "lucide-react";
 import React from "react";
 
-import { getConversations } from "@/lib/db/queries/conversations";
+import { getConversations } from "@/lib/db/queries/conversations.queries";
 
 import ConversationsNav from "./conversation-nav";
 import {

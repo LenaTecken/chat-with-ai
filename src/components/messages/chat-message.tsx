@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import React from "react";
 
-import { Message } from "@/lib/db/schema/messages";
+import { Message } from "@/lib/db/schema/messages.schema";
 import { cn } from "@/lib/utils";
 
 interface Props {

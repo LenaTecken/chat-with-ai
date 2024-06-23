@@ -1,4 +1,4 @@
-import { getConversationMessages } from "@/lib/db/queries/messages";
+import { getConversationMessages } from "@/lib/db/queries/messages.queries";
 
 export const dynamic = "force-dynamic";
 
