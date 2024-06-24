@@ -6,6 +6,10 @@ Test assessment showcasing a chat app to communicate with a ChatGPT model. The a
 
 https://github.com/LenaTecken/chat-with-ai/assets/157580748/7ca6cf07-327a-47ba-bd58-a2e74ac6c1af
 
+## Required to run
+
+1. Node.js. Version `>=20`
+2. Docker
 
 ## Get Started
 
